@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a6fa8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lab Report">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>The Lab Report 🧪</title>
+<meta name="theme-color" content="#1a3a5c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lab Report">
+<link rel="manifest" href="manifest.json">
+<style>
+:root {
+  --bg:#080e18;--bg2:#0d1520;--card:#111e2e;--bd:#1a2e44;--bd2:#243d57;
+  --tx:#e8f4f8;--tx2:#9bbdd4;--tx3:#5a7d99;
+  --B:#1a6fa8;--B2:#2d9fd8;--B3:#0d3d5c;
+  --G:#12a37a;--G2:#1dc994;--GL:#0a2018;
+  --red:#c0392b;--red2:#e05555;
+  --amber:#c47a1a;--amber2:#e8962a;
+  --gold:#c9a84c;--gold2:#e8c870;
+  --purple:#6c5fc7;--purple2:#8f84e8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:-apple-system,'SF Pro Text',sans-serif;min-height:100vh;padding-bottom:2rem}
+
+.header{background:linear-gradient(160deg,#0a1628,#080e18);padding:1.75rem 1.25rem 1rem;border-bottom:1px solid var(--bd)}
+.header-title{font-size:22px;font-weight:800;color:var(--B2);letter-spacing:-.3px}
+.header-sub{font-size:11px;color:var(--tx3);margin-top:3px}
+.header-note{font-size:10px;color:var(--tx3);margin-top:.5rem;font-style:italic}
+
+.nav{display:flex;background:var(--bg2);border-bottom:1px solid var(--bd);overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:100}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{flex-shrink:0;padding:.7rem .85rem;font-size:12px;font-weight:600;color:var(--tx3);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
+.nav-btn.active{color:var(--B2);border-bottom-color:var(--B2)}
+
+.sec{display:none;padding:1rem}
+.sec.active{display:block}
+.sec-lbl{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.65rem;margin-top:.25rem}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:.85rem}
+
+/* KEY NUMBERS GRID */
+.num-grid{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin-bottom:.75rem}
+.num-card{border-radius:12px;padding:.75rem;text-align:center;border:1px solid}
+.num-val{font-size:24px;font-weight:900;line-height:1}
+.num-lbl{font-size:9px;font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.num-ref{font-size:8px;color:var(--tx3);margin-top:2px}
+
+/* STATUS PILLS */
+.pill{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px}
+
+/* MED CARDS */
+.med-time{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3);margin-bottom:.5rem;margin-top:.1rem}
+.med-row{display:flex;justify-content:space-between;align-items:flex-start;padding:.45rem 0;border-bottom:.5px solid var(--bd2)}
+.med-row:last-child{border-bottom:none}
+.med-name{font-size:13px;font-weight:600;color:var(--tx)}
+.med-dose{font-size:12px;font-weight:700;color:var(--B2);flex-shrink:0;margin-left:.5rem}
+.med-note{font-size:11px;color:var(--tx3);margin-top:2px;line-height:1.4}
+
+/* TIMELINE */
+.tl-item{display:flex;gap:.65rem;padding-bottom:.85rem;position:relative}
+.tl-item::before{content:'';position:absolute;left:14px;top:28px;bottom:0;width:1px;background:var(--bd);z-index:0}
+.tl-item:last-child::before{display:none}
+.tl-icon{font-size:18px;flex-shrink:0;width:30px;text-align:center;z-index:1}
+.tl-date{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.04em}
+.tl-title{font-size:13px;font-weight:600;color:var(--tx);margin-top:1px}
+.tl-note{font-size:11px;color:var(--tx3);margin-top:3px;line-height:1.5}
+
+/* ROOT CAUSE */
+.root-card{background:linear-gradient(135deg,#080e18,#0a1e2e);border:1.5px solid #1a6fa844;border-radius:16px;padding:1.1rem;margin-bottom:.75rem}
+
+/* PROGRESS ARROW */
+.arrow-chain{font-size:11px;color:var(--tx3);line-height:2;margin:.4rem 0}
+.arrow-chain .step{display:inline-block;background:var(--bd);border-radius:6px;padding:2px 7px;font-size:10px;font-weight:600;color:var(--tx2);margin:2px}
+.arrow-chain .step.bad{background:#2a0808;color:var(--red2)}
+.arrow-chain .step.good{background:#0a2018;color:var(--G2)}
+.arrow-chain .arr{color:var(--tx3);margin:0 1px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-title">🧪 The Lab Report</div>
+  <div class="header-sub">Jon C · Clinical health dashboard</div>
+  <div class="header-note">For reference only · Do not modify medications without Dr. Lawson</div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="showSec('overview',this)">📊 Overview</button>
+  <button class="nav-btn" onclick="showSec('meds',this)">💊 Meds</button>
+  <button class="nav-btn" onclick="showSec('labs',this)">🩸 Labs</button>
+  <button class="nav-btn" onclick="showSec('tcm',this)">🌿 TCM</button>
+  <button class="nav-btn" onclick="showSec('timeline',this)">📅 Timeline</button>
+  <button class="nav-btn" onclick="showSec('team',this)">👨‍⚕️ Team</button>
+</div>
+
+<!-- OVERVIEW -->
+<div id="sec-overview" class="sec active">
+
+  <div class="root-card">
+    <div style="font-size:10px;font-weight:700;color:var(--B2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Root Cause Chain — The SHBG Trap</div>
+    <div style="font-size:15px;font-weight:800;color:#fff;margin-bottom:.2rem">성호르몬결합글로불린 과다</div>
+    <div class="arrow-chain">
+      <span class="step bad">Risperidone ❌ Gone</span>
+      <span class="arr">→</span>
+      <span class="step bad">Prolactin ↑↑</span>
+      <span class="arr">→</span>
+      <span class="step bad">SHBG ↑↑↑</span>
+      <span class="arr">→</span>
+      <span class="step bad">Free T ↓</span>
+      <span class="arr">→</span>
+      <span class="step bad">ED + Fatigue</span>
+    </div>
+    <div class="arrow-chain" style="margin-top:.2rem">
+      <span class="step good">Abilify ✅ Active</span>
+      <span class="arr">→</span>
+      <span class="step good">Prolactin ↓</span>
+      <span class="arr">→</span>
+      <span class="step good">SHBG ↓</span>
+      <span class="arr">→</span>
+      <span class="step good">Free T ↑</span>
+      <span class="arr">→</span>
+      <span class="step good">Recovery 🌴</span>
+    </div>
+  </div>
+
+  <div class="sec-lbl">Key numbers — Mar 27, 2026 panel</div>
+  <div class="num-grid">
+    <div class="num-card" style="background:#1a0808;border-color:#c0392b55">
+      <div class="num-val" style="color:#e05555">1398</div>
+      <div class="num-lbl" style="color:#e05555">Total T ng/dL</div>
+      <div class="num-ref">Ref: 264–916 · ↑ HIGH</div>
+    </div>
+    <div class="num-card" style="background:#1a1005;border-color:#c47a1a55">
+      <div class="num-val" style="color:#c47a1a">5.0</div>
+      <div class="num-lbl" style="color:#c47a1a">Free T pg/mL</div>
+      <div class="num-ref">Ref: 8.7–25.1 · ↓ LOW</div>
+    </div>
+    <div class="num-card" style="background:#1a0808;border-color:#c0392b55">
+      <div class="num-val" style="color:#e05555">167</div>
+      <div class="num-lbl" style="color:#e05555">SHBG nmol/L</div>
+      <div class="num-ref">Ref: 16.5–55.9 · ↑↑↑</div>
+    </div>
+    <div class="num-card" style="background:#1a0808;border-color:#c0392b55">
+      <div class="num-val" style="color:#e05555">60</div>
+      <div class="num-lbl" style="color:#e05555">Prolactin</div>
+      <div class="num-ref">Ref: 3.9–22.7 · ↑ HIGH</div>
+    </div>
+    <div class="num-card" style="background:#1a0f04;border-color:#d4622d55">
+      <div class="num-val" style="color:#d4622d">58</div>
+      <div class="num-lbl" style="color:#d4622d">Platelets 🚨</div>
+      <div class="num-ref">Ref: 150–450 · ALERT</div>
+    </div>
+    <div class="num-card" style="background:#071a10;border-color:#12a37a55">
+      <div class="num-val" style="color:var(--G2)">12.6</div>
+      <div class="num-lbl" style="color:var(--G2)">Hemoglobin ↑</div>
+      <div class="num-ref">Was 8.7 in Jan ✅</div>
+    </div>
+    <div class="num-card" style="background:#071a10;border-color:#12a37a55">
+      <div class="num-val" style="color:var(--G2)">131</div>
+      <div class="num-lbl" style="color:var(--G2)">Iron ug/dL ✅</div>
+      <div class="num-ref">Was 20 in Jan</div>
+    </div>
+    <div class="num-card" style="background:#1a0808;border-color:#c0392b55">
+      <div class="num-val" style="color:#e05555">4.15</div>
+      <div class="num-lbl" style="color:#e05555">FIB-4 Index</div>
+      <div class="num-ref">High risk · monitor</div>
+    </div>
+  </div>
+
+  <div class="card" style="background:var(--GL);border-color:var(--G);margin-bottom:.5rem">
+    <div style="font-size:11px;font-weight:700;color:var(--G2);margin-bottom:.45rem">✅ All clear</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
+      <div style="font-size:11px;font-weight:600;color:var(--G2)">✅ Hepatitis B — Neg</div>
+      <div style="font-size:11px;font-weight:600;color:var(--G2)">✅ Hepatitis C — Neg</div>
+      <div style="font-size:11px;font-weight:600;color:var(--G2)">✅ Candida — Neg</div>
+      <div style="font-size:11px;font-weight:600;color:var(--G2)">✅ Cardiac CRP — Low</div>
+      <div style="font-size:11px;font-weight:600;color:var(--G2)">✅ Glucose — 76</div>
+      <div style="font-size:11px;font-weight:600;color:var(--G2)">✅ HDL — 61 Good</div>
+    </div>
+  </div>
+
+  <div class="card" style="background:#071a10;border-color:#12a37a30;margin-top:.5rem">
+    <div style="font-size:12px;color:#4dba8a;line-height:1.7">When you were sober Nov 23–Jan 26, your <b>AST dropped from 181 → 41</b>. Your body heals when you stop. Every sober day is a healing day. 🌿</div>
+  </div>
+</div>
+
+<!-- MEDS -->
+<div id="sec-meds" class="sec">
+  <div class="sec-lbl">⚠️ ALAmax CR — take 30 min BEFORE breakfast AND dinner</div>
+  <div class="card" style="border-color:var(--amber);background:#1a130a;margin-bottom:.75rem">
+    <div class="med-row" style="border:none;padding:.2rem 0">
+      <div><div class="med-name">ALAmax CR</div><div class="med-note">30 min BEFORE breakfast AND dinner · timed release alpha lipoic acid</div></div>
+      <div class="med-dose">1 cap</div>
+    </div>
+  </div>
+
+  <div class="sec-lbl">🌅 Morning</div>
+  <div class="card" style="margin-bottom:.65rem">
+    <div class="med-row">
+      <div><div class="med-name">Aripiprazole (Abilify)</div><div class="med-note" style="color:var(--G2)">✅ Active · replaces Risperidone · prolactin-sparing · mood stabilizer</div></div>
+      <div class="med-dose" style="color:var(--G2)">2mg</div>
+    </div>
+    <div class="med-row">
+      <div><div class="med-name">Wellbutrin</div><div class="med-note">Mood anchor · CYP2B6 · take with food</div></div>
+      <div class="med-dose">150mg</div>
+    </div>
+    <div class="med-row">
+      <div><div class="med-name">Lithium Carbonate</div><div class="med-note">Level 0.2 — sub-therapeutic · hydration critical · NEVER mix with alcohol</div></div>
+      <div class="med-dose">150mg</div>
+    </div>
+    <div class="med-row">
+      <div><div class="med-name">Methylphenidate ER</div><div class="med-note">ADHD · before 8am ideally · monitor BP with Tadalafil</div></div>
+      <div class="med-dose">18mg</div>
+    </div>
+    <div class="med-row">
+      <div><div class="med-name">Tadalafil (Cialis)</div><div class="med-note">Daily therapeutic · Dr. Lawson · blood flow + ED</div></div>
+      <div class="med-dose">5mg</div>
+    </div>
+    <div class="med-row">
+      <div><div class="med-name">Tongkat Ali</div><div class="med-note">Testosterone support</div></div>
+      <div class="med-dose">1 cap</div>
+    </div>
+    <div class="med-row">
+      <div><div class="med-name">Vitamin D3/K2</div><div class="med-note">Bone + immune · D was 29.3 (low)</div></div>
+      <div class="med-dose">1 cap</div>
+    </div>
+    <div class="med-row">
+      <div><div class="med-name">BodyBio PC</div><div class="med-note">Phospholipid liver support</div></div>
+      <div class="med-dose">1 cap</div>
+    </div>
+    <div class="med-row">
+      <div><div class="med-name">TUDCA Plus</div><div class="med-note">Liver bile acid support · reduces bilirubin</div></div>
+      <div class="med-dose">1 cap</div>
+    </div>
+    <div class="med-row">
+      <div><div class="med-name">AugNAC</div><div class="med-note">NAC + glycine · glutathione support</div></div>
+      <div class="med-dose">1 cap</div>
+    </div>
+  </div>
+
+  <div class="sec-lbl">☀️ Afternoon</div>
+  <div class="card" style="margin-bottom:.65rem">
+    <div class="med-row" style="border:none">
+      <div><div class="med-name">Methylphenidate IR</div><div class="med-note">Afternoon focus · before 3pm · stimulants create Heat/Yin def — Mai Men Dong helps</div></div>
+      <div class="med-dose">10mg</div>
+    </div>
+  </div>
+
+  <div class="sec-lbl">🌙 Evening</div>
+  <div class="card" style="margin-bottom:.65rem">
+    <div class="med-row">
+      <div><div class="med-name">Lithium Carbonate</div><div class="med-note">Evening dose · hydrate well</div></div>
+      <div class="med-dose">150mg</div>
+    </div>
+    <div class="med-row">
+      <div><div class="med-name">TUDCA Plus</div><div class="med-note">Evening liver support</div></div>
+      <div class="med-dose">1 cap</div>
+    </div>
+    <div class="med-row">
+      <div><div class="med-name">AugNAC</div><div class="med-note">Evening glutathione</div></div>
+      <div class="med-dose">1 cap</div>
+    </div>
+    <div class="med-row">
+      <div><div class="med-name">Advanced Milk Thistle</div><div class="med-note">Phospholipid silymarin · with food</div></div>
+      <div class="med-dose">1 cap</div>
+    </div>
+    <div class="med-row">
+      <div><div class="med-name">FLORASSIST</div><div class="med-note">Probiotic · take away from other meds</div></div>
+      <div class="med-dose">1 cap</div>
+    </div>
+  </div>
+
+  <div class="card" style="background:#2a0808;border-color:var(--red);margin-bottom:.5rem">
+    <div style="font-size:11px;font-weight:700;color:var(--red2);margin-bottom:.3rem">❌ Discontinued</div>
+    <div style="font-size:12px;color:var(--tx3);text-decoration:line-through">Risperidone — was primary cause of high prolactin → SHBG trap</div>
+    <div style="font-size:11px;color:var(--G2);margin-top:.3rem">✅ Replaced by Abilify 2mg · Jul 2026</div>
+  </div>
+</div>
+
+<!-- LABS -->
+<div id="sec-labs" class="sec">
+  <div style="font-size:11px;color:var(--tx3);margin-bottom:.75rem">Last panel: Mar 27, 2026 — Dr. Lawson · Next panel: TBD</div>
+
+  <div class="sec-lbl">🚨 Critical / Alert</div>
+  <div class="card" style="margin-bottom:.5rem;border-left:3px solid var(--red)">
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:.5px solid var(--bd2)"><span style="font-size:12px;color:var(--tx)">Platelets</span><span style="font-size:12px;font-weight:700;color:#d4622d">58 🚨 (143→93→58)</span></div>
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:.5px solid var(--bd2)"><span style="font-size:12px;color:var(--tx)">Prolactin</span><span style="font-size:12px;font-weight:700;color:var(--red2)">60 ↑ (ref 3.9–22.7)</span></div>
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:.5px solid var(--bd2)"><span style="font-size:12px;color:var(--tx)">SHBG</span><span style="font-size:12px;font-weight:700;color:var(--red2)">167 ↑ (ref 16.5–55.9)</span></div>
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:.5px solid var(--bd2)"><span style="font-size:12px;color:var(--tx)">FIB-4 Index</span><span style="font-size:12px;font-weight:700;color:var(--red2)">4.15 ↑ high risk</span></div>
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0"><span style="font-size:12px;color:var(--tx)">Free Testosterone</span><span style="font-size:12px;font-weight:700;color:var(--amber)">5.0 ↓ (ref 8.7–25.1)</span></div>
+  </div>
+
+  <div class="sec-lbl">✅ Improving</div>
+  <div class="card" style="margin-bottom:.5rem;border-left:3px solid var(--G)">
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:.5px solid var(--bd2)"><span style="font-size:12px;color:var(--tx)">Hemoglobin</span><span style="font-size:12px;font-weight:700;color:var(--G2)">8.7 → 12.6 ✅</span></div>
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:.5px solid var(--bd2)"><span style="font-size:12px;color:var(--tx)">Iron</span><span style="font-size:12px;font-weight:700;color:var(--G2)">20 → 131 ✅</span></div>
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:.5px solid var(--bd2)"><span style="font-size:12px;color:var(--tx)">Ferritin</span><span style="font-size:12px;font-weight:700;color:var(--G2)">15 → 120 ✅</span></div>
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:.5px solid var(--bd2)"><span style="font-size:12px;color:var(--tx)">ALT</span><span style="font-size:12px;font-weight:700;color:var(--G2)">143 → 27 ✅</span></div>
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0"><span style="font-size:12px;color:var(--tx)">AST</span><span style="font-size:12px;font-weight:700;color:var(--amber)">181 → 58 ⚠️ watch</span></div>
+  </div>
+
+  <div class="sec-lbl">⚠️ Other flags</div>
+  <div class="card" style="margin-bottom:.5rem;border-left:3px solid var(--amber)">
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:.5px solid var(--bd2)"><span style="font-size:12px;color:var(--tx)">DHEA-Sulfate</span><span style="font-size:12px;font-weight:700;color:var(--amber)">74.7 ↓</span></div>
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:.5px solid var(--bd2)"><span style="font-size:12px;color:var(--tx)">IGF-1</span><span style="font-size:12px;font-weight:700;color:var(--amber)">36 ↓</span></div>
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:.5px solid var(--bd2)"><span style="font-size:12px;color:var(--tx)">Reverse T3</span><span style="font-size:12px;font-weight:700;color:var(--red2)">35.0 ↑</span></div>
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:.5px solid var(--bd2)"><span style="font-size:12px;color:var(--tx)">Vitamin D</span><span style="font-size:12px;font-weight:700;color:var(--amber)">29.3 ↓</span></div>
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0;border-bottom:.5px solid var(--bd2)"><span style="font-size:12px;color:var(--tx)">Bilirubin Total</span><span style="font-size:12px;font-weight:700;color:var(--red2)">2.7 ↑</span></div>
+    <div style="display:flex;justify-content:space-between;padding:.35rem 0"><span style="font-size:12px;color:var(--tx)">Total Testosterone</span><span style="font-size:12px;font-weight:700;color:var(--red2)">1398 ↑ HIGH</span></div>
+  </div>
+
+  <div class="sec-lbl">✅ All clear</div>
+  <div class="card" style="background:var(--GL);border-color:var(--G);margin-bottom:.5rem">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
+      <div style="font-size:11px;font-weight:600;color:var(--G2)">✅ Hepatitis B — Neg</div>
+      <div style="font-size:11px;font-weight:600;color:var(--G2)">✅ Hepatitis C — Neg</div>
+      <div style="font-size:11px;font-weight:600;color:var(--G2)">✅ Candida — Neg</div>
+      <div style="font-size:11px;font-weight:600;color:var(--G2)">✅ Cardiac CRP — Low</div>
+      <div style="font-size:11px;font-weight:600;color:var(--G2)">✅ Glucose — 76</div>
+      <div style="font-size:11px;font-weight:600;color:var(--G2)">✅ HDL — 61 Good</div>
+    </div>
+  </div>
+
+  <div class="card" style="border-color:var(--B3);background:#080e18">
+    <div style="font-size:11px;color:var(--tx3);font-weight:600;margin-bottom:.35rem">📋 Next labs to watch for</div>
+    <div style="font-size:11px;color:var(--tx3);line-height:1.8">
+      Prolactin — should drop with Abilify<br>
+      SHBG — should follow prolactin down<br>
+      Free T — should rise as SHBG drops<br>
+      Platelets — trending down, monitor closely<br>
+      AST — still elevated, keep drinking minimal
+    </div>
+  </div>
+</div>
+
+<!-- TCM -->
+<div id="sec-tcm" class="sec">
+  <div class="sec-lbl">Pattern diagnosis</div>
+  <div class="card" style="margin-bottom:.45rem;border-left:3px solid var(--red)">
+    <div style="font-size:13px;font-weight:700;color:var(--tx)">🔥 Blood Heat (血热)</div>
+    <div style="font-size:11px;color:var(--tx3);margin-top:.25rem">Psoriasis · red plaques · greasy food triggers · Cool Blood, Clear Heat</div>
+  </div>
+  <div class="card" style="margin-bottom:.45rem;border-left:3px solid var(--B)">
+    <div style="font-size:13px;font-weight:700;color:var(--tx)">🔵 Liver Qi Stagnation (肝气郁结)</div>
+    <div style="font-size:11px;color:var(--tx3);margin-top:.25rem">High SHBG · elevated bilirubin · mood instability · Move Liver Qi</div>
+  </div>
+  <div class="card" style="margin-bottom:.45rem;border-left:3px solid var(--purple)">
+    <div style="font-size:13px;font-weight:700;color:var(--tx)">⚡ Kidney Yang Deficiency (肾阳虚)</div>
+    <div style="font-size:11px;color:var(--tx3);margin-top:.25rem">Low free T · ED · low DHEA · low IGF-1 · Warm and Tonify Kidney Yang</div>
+  </div>
+  <div class="card" style="margin-bottom:.65rem;border-left:3px solid var(--gold)">
+    <div style="font-size:13px;font-weight:700;color:var(--tx)">💛 Liver Blood Deficiency (肝血虚)</div>
+    <div style="font-size:11px;color:var(--tx3);margin-top:.25rem">Previous severe anemia · low ferritin · hair loss · Nourish Liver Blood</div>
+  </div>
+
+  <div class="sec-lbl">Current formulas (QualiHerb capsules)</div>
+  <div class="card" style="margin-bottom:.45rem;border-left:3px solid var(--G)">
+    <div style="font-size:13px;font-weight:700;color:var(--G2)">Liu Wei Di Huang Wan</div>
+    <div style="font-size:11px;color:var(--tx3);margin-top:.25rem">Six Flavor Rehmannia · Kidney Yin deficiency · foundation formula</div>
+  </div>
+  <div class="card" style="margin-bottom:.45rem;border-left:3px solid var(--amber)">
+    <div style="font-size:13px;font-weight:700;color:var(--amber2)">Zeng Ye Cheng Qi Tang</div>
+    <div style="font-size:11px;color:var(--red2);margin-top:.25rem">⚠️ Lithium interaction — discuss with Dr. Lawson before use</div>
+  </div>
+  <div class="card" style="margin-bottom:.65rem;border-left:3px solid var(--B)">
+    <div style="font-size:13px;font-weight:700;color:var(--B2)">Xiao Feng San</div>
+    <div style="font-size:11px;color:var(--tx3);margin-top:.25rem">Eliminate Wind Powder · skin / psoriasis / wind-heat pattern</div>
+  </div>
+
+  <div class="sec-lbl">Liver — the why behind all of this</div>
+  <div class="card" style="background:#071a10;border-color:#12a37a30">
+    <div style="font-size:12px;color:#4dba8a;line-height:1.8">
+      Sober Nov 23–Jan 26: <b>AST 181 → 41</b> 📉<br>
+      Drinking resumed: AST crept back up<br>
+      Current AST: 58 · improving but watching<br>
+      FIB-4: 4.15 — significant fibrosis risk<br>
+      <span style="color:var(--G2);font-weight:600">Every sober day = a healing day 🌿</span>
+    </div>
+  </div>
+
+  <div class="sec-lbl" style="margin-top:.75rem">➕ Add new lab result</div>
+  <div class="card" style="margin-bottom:.65rem">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">
+      <div>
+        <div style="font-size:10px;color:var(--tx3);font-weight:600;margin-bottom:.25rem">TEST NAME</div>
+        <select id="lab-name" style="width:100%;background:var(--bg2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);padding:.45rem .5rem;font-size:12px;font-family:inherit">
+          <option>Prolactin</option>
+          <option>SHBG</option>
+          <option>Free Testosterone</option>
+          <option>Total Testosterone</option>
+          <option>Platelets</option>
+          <option>Hemoglobin</option>
+          <option>AST</option>
+          <option>ALT</option>
+          <option>Iron</option>
+          <option>Ferritin</option>
+          <option>FIB-4 Index</option>
+          <option>DHEA-Sulfate</option>
+          <option>IGF-1</option>
+          <option>Reverse T3</option>
+          <option>Vitamin D</option>
+          <option>Bilirubin Total</option>
+          <option>Lithium Level</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--tx3);font-weight:600;margin-bottom:.25rem">VALUE</div>
+        <input id="lab-val" type="text" placeholder="e.g. 42" style="width:100%;background:var(--bg2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);padding:.45rem .5rem;font-size:12px;font-family:inherit">
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">
+      <div>
+        <div style="font-size:10px;color:var(--tx3);font-weight:600;margin-bottom:.25rem">DATE</div>
+        <input id="lab-date" type="date" style="width:100%;background:var(--bg2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);padding:.45rem .5rem;font-size:12px;font-family:inherit">
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--tx3);font-weight:600;margin-bottom:.25rem">TREND</div>
+        <select id="lab-trend" style="width:100%;background:var(--bg2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);padding:.45rem .5rem;font-size:12px;font-family:inherit">
+          <option value="watch">⚠️ Watch</option>
+          <option value="good">✅ Good</option>
+          <option value="alert">🚨 Alert</option>
+          <option value="improving">📈 Improving</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-bottom:.5rem">
+      <div style="font-size:10px;color:var(--tx3);font-weight:600;margin-bottom:.25rem">NOTES (optional)</div>
+      <input id="lab-notes" type="text" placeholder="e.g. fasting · pre-meds" style="width:100%;background:var(--bg2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);padding:.45rem .5rem;font-size:12px;font-family:inherit">
+    </div>
+    <button onclick="saveLabEntry()" style="width:100%;background:var(--B);color:#fff;border:none;border-radius:10px;padding:.7rem;font-size:13px;font-weight:700;cursor:pointer">Save Lab Result ✓</button>
+    <div id="lab-saved-msg" style="display:none;text-align:center;font-size:12px;color:var(--G2);margin-top:.5rem">✅ Saved!</div>
+  </div>
+
+  <div class="sec-lbl">📋 Your logged results</div>
+  <div id="lab-history"></div>
+
+</div>
+
+<!-- TIMELINE -->
+<div id="sec-timeline" class="sec">
+  <div class="sec-lbl">Treatment timeline</div>
+  <div id="tl-list"></div>
+</div>
+
+<!-- TEAM -->
+<div id="sec-team" class="sec">
+  <div class="sec-lbl">Your care team</div>
+  <div class="card" style="margin-bottom:.5rem">
+    <div style="font-size:14px;font-weight:700;color:var(--tx)">Dr. Lawson — Pro Active Wellness</div>
+    <div style="font-size:11px;color:var(--tx3);margin:.3rem 0">Supplements · hormone protocol · Tadalafil · myemedfusion.com portal</div>
+    <a href="tel:7038225003" style="font-size:12px;color:var(--G2);font-weight:600">📞 703-822-5003</a>
+  </div>
+  <div class="card" style="margin-bottom:.5rem">
+    <div style="font-size:14px;font-weight:700;color:var(--tx)">Dr. Lau — TCM Consultation</div>
+    <div style="font-size:11px;color:var(--tx3);margin:.3rem 0">Blood Heat psoriasis · Liver Qi stagnation · Kidney Yang deficiency · bring this app</div>
+  </div>
+  <div class="card" style="margin-bottom:.5rem">
+    <div style="font-size:14px;font-weight:700;color:var(--tx)">VUIM — Student Health Resources</div>
+    <div style="font-size:11px;color:var(--tx3);margin:.3rem 0">jcenteno25@vuim.edu · D.AcOM program 2026–2030</div>
+  </div>
+
+  <div class="sec-lbl">Suppliers</div>
+  <div class="card" style="margin-bottom:.5rem">
+    <div style="font-size:13px;font-weight:700;color:var(--G2)">Pro Active Wellness — Dr. Lawson</div>
+    <div style="font-size:11px;color:var(--tx3);margin:.25rem 0">BodyBio PC · TUDCA · ALAmax · NAC · Tongkat Ali · D3K2</div>
+    <a href="https://myemedfusion.com" target="_blank" style="font-size:11px;color:var(--G2)">myemedfusion.com →</a>
+  </div>
+  <div class="card" style="margin-bottom:.5rem">
+    <div style="font-size:13px;font-weight:700;color:var(--tx)">Mayway Herbs</div>
+    <div style="font-size:11px;color:var(--tx3);margin:.25rem 0">🎓 Register with VUIM email for student discount</div>
+    <a href="https://www.mayway.com/student-benefits" target="_blank" style="font-size:11px;color:var(--G2)">Create student account →</a>
+  </div>
+  <div class="card" style="margin-bottom:.5rem">
+    <div style="font-size:13px;font-weight:700;color:var(--tx)">Evergreen Herbs</div>
+    <div style="font-size:11px;color:var(--tx3);margin:.25rem 0">🎓 Student pricing — register with VUIM email</div>
+    <a href="https://www.evherbs.com" target="_blank" style="font-size:11px;color:var(--G2)">Shop Evergreen →</a>
+  </div>
+</div>
+
+<script>
+var TL = [
+  {d:"Aug 2023",t:"Baseline",n:"Hemoglobin 15.7 (normal) · AST 181 ↑ · ALT 143 ↑ · Liver severely stressed",e:"🔴"},
+  {d:"Jan 23, 2026",t:"Crisis Point",n:"Hemoglobin 8.7 ↓ · Platelets 81 ↓ · Iron 20 ↓ · Ferritin 15 ↓ · Lithium 0.2 sub-therapeutic",e:"⚠️"},
+  {d:"Mar 27, 2026",t:"Dr. Lawson Panel",n:"Hgb 12.6 ↑ · Iron 131 ✅ · Total T 1398 ↑ · Free T 5.0 ↓ · Prolactin 69.7 ↑ · Protocol designed",e:"💊"},
+  {d:"Apr 7, 2026",t:"Prescriptions Issued",n:"Tadalafil 5mg · BodyBio PC · TUDCA · ALAmax · NAC · Tongkat Ali · D3K2 · Risperidone taper begins",e:"🔬"},
+  {d:"Apr 8, 2026",t:"SHBG Confirmed",n:"SHBG 167 ↑ · Prolactin 60 ↑ · Abilify switch plan confirmed",e:"📊"},
+  {d:"Jun 8, 2026",t:"Supplement Protocol Active",n:"All Dr. Lawson supplements begin · liver repair protocol fully running",e:"🚀"},
+  {d:"Jul 2026",t:"Abilify Switch ✅ DONE",n:"Risperidone discontinued · Aripiprazole 2mg morning · prolactin normalizing · morning wood returning · mood improving",e:"⭐"},
+  {d:"2030",t:"D.AcOM Graduation — VUIM",n:"Doctor of Acupuncture and Oriental Medicine · You will understand every part of this clinically 💪",e:"🎓"}
+];
+
+var tll = document.getElementById("tl-list");
+tll.innerHTML = TL.map(function(t){
+  return '<div class="tl-item"><div class="tl-icon">'+t.e+'</div><div><div class="tl-date">'+t.d+'</div><div class="tl-title">'+t.t+'</div><div class="tl-note">'+t.n+'</div></div></div>';
+}).join('');
+
+function showSec(id, btn) {
+  document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('active')});
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active')});
+  document.getElementById('sec-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Set today as default date
+var labDateEl = document.getElementById('lab-date');
+if(labDateEl) labDateEl.valueAsDate = new Date();
+
+function saveLabEntry() {
+  var name = document.getElementById('lab-name').value;
+  var val = document.getElementById('lab-val').value.trim();
+  var date = document.getElementById('lab-date').value;
+  var trend = document.getElementById('lab-trend').value;
+  var notes = document.getElementById('lab-notes').value.trim();
+  if(!val || !date) return;
+  var entries = JSON.parse(localStorage.getItem('labEntries')||'[]');
+  entries.unshift({name:name, val:val, date:date, trend:trend, notes:notes, ts:Date.now()});
+  localStorage.setItem('labEntries', JSON.stringify(entries.slice(0,200)));
+  document.getElementById('lab-val').value = '';
+  document.getElementById('lab-notes').value = '';
+  var msg = document.getElementById('lab-saved-msg');
+  msg.style.display = 'block';
+  setTimeout(function(){msg.style.display='none';}, 2000);
+  renderLabHistory();
+}
+
+function deleteLabEntry(ts) {
+  var entries = JSON.parse(localStorage.getItem('labEntries')||'[]');
+  entries = entries.filter(function(e){return e.ts !== ts;});
+  localStorage.setItem('labEntries', JSON.stringify(entries));
+  renderLabHistory();
+}
+
+function renderLabHistory() {
+  var entries = JSON.parse(localStorage.getItem('labEntries')||'[]');
+  var el = document.getElementById('lab-history');
+  if(!entries.length) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--tx3);text-align:center;padding:1rem">No entries yet — add your next labs above</div>';
+    return;
+  }
+  var trendColors = {good:'var(--G2)',alert:'var(--red2)',watch:'var(--amber)',improving:'#4a9fd4'};
+  var trendIcons = {good:'✅',alert:'🚨',watch:'⚠️',improving:'📈'};
+  // Group by date
+  var byDate = {};
+  entries.forEach(function(e){
+    if(!byDate[e.date]) byDate[e.date] = [];
+    byDate[e.date].push(e);
+  });
+  var out = '';
+  Object.keys(byDate).sort().reverse().forEach(function(date){
+    var pretty = new Date(date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    out += '<div style="font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.06em;text-transform:uppercase;margin:.65rem 0 .3rem">'+pretty+'</div>';
+    byDate[date].forEach(function(e){
+      var c = trendColors[e.trend]||'var(--tx2)';
+      var ic = trendIcons[e.trend]||'';
+      out += '<div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:.65rem .75rem;margin-bottom:.35rem;display:flex;align-items:center;justify-content:space-between">'
+        +'<div>'
+        +'<div style="font-size:13px;font-weight:600;color:var(--tx)">'+e.name+'</div>'
+        +(e.notes?'<div style="font-size:10px;color:var(--tx3);margin-top:1px">'+e.notes+'</div>':'')
+        +'</div>'
+        +'<div style="display:flex;align-items:center;gap:.5rem">'
+        +'<div style="font-size:16px;font-weight:800;color:'+c+'">'+ic+' '+e.val+'</div>'
+        +'<button onclick="deleteLabEntry('+e.ts+')" style="background:none;border:none;color:var(--tx3);font-size:14px;cursor:pointer;padding:0 .2rem">✕</button>'
+        +'</div>'
+        +'</div>';
+    });
+  });
+  el.innerHTML = out;
+}
+renderLabHistory();
+
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('./sw.js');
+  });
+}
+</script>
+</body>
+</html>
